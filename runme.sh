@@ -22,7 +22,7 @@ set -e
 # Distribution for rootfs
 # - ubuntu
 # - debian
-: ${DISTRO:=ubuntu}
+: ${DISTRO:=debian}
 # Ubuntu Version
 # - focal (20.04)
 # - jammy (22.04)
@@ -458,6 +458,13 @@ if [[ -d ${ROOTDIR}/build/mdio-proxy-module ]]; then
 
 	make -C "${ROOTDIR}/build/linux" CROSS_COMPILE="$CROSS_COMPILE" ARCH=arm64 M="$PWD" modules
 	install -v -m644 -D mdio-proxy.ko "${ROOTDIR}/images/tmp/lib/modules/${KRELEASE}/kernel/extra/mdio-proxy.ko"
+fi
+
+# Build trx_sdr kernel module
+if [[ -d ${ROOTDIR}/trx_sdr-aarch64-2023-12-15/kernel ]]; then
+	cd "${ROOTDIR}/trx_sdr-aarch64-2023-12-15/kernel"
+	make -C "${ROOTDIR}/build/linux" CROSS_COMPILE="$CROSS_COMPILE" ARCH=arm64 CFLAGS_MODULE='-DCONFIG_VERSION=\"$(CONFIG_VERSION)\"' M="$PWD" modules
+	install -v -m644 -D sdr.ko "${ROOTDIR}/images/tmp/lib/modules/${KRELEASE}/kernel/extra/sdr.ko"
 fi
 
 # regenerate modules dependencies
