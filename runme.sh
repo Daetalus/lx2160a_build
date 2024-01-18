@@ -382,7 +382,7 @@ make -C config/
 
 echo "Building the kernel"
 cd $ROOTDIR/build/linux
-./scripts/kconfig/merge_config.sh arch/arm64/configs/defconfig arch/arm64/configs/lsdk.config $ROOTDIR/configs/linux/lx2k_additions.config
+./scripts/kconfig/merge_config.sh arch/arm64/configs/defconfig arch/arm64/configs/lsdk.config $ROOTDIR/configs/linux/lx2k_additions.config $ROOTDIR/configs/linux/amarisoft.config
 make -j${PARALLEL} all #Image dtbs
 KRELEASE=`make kernelrelease`
 
